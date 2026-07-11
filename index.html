@@ -386,6 +386,33 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
   html{scroll-behavior:auto}
 }
+
+/* 最終レイアウト調整 */
+.controls-in{padding-bottom:16px}
+.quick-index{margin-bottom:0}
+.list-wrap{padding-top:28px}
+.scard-body{display:flex;flex-direction:column}
+.scard-img{flex:none}
+.scard-no{
+  left:auto;right:10px;top:10px;bottom:auto;
+  border-radius:999px;padding:3px 8px 3px 9px;
+  background:rgba(22,41,79,.86);z-index:3;
+}
+.scard-title-overlay{padding:42px 16px 14px}
+.scard-info{
+  display:flex;align-items:center;min-height:54px;
+  padding:13px 16px 14px;box-sizing:border-box;
+}
+.scard-meta{margin-top:0;display:flex;align-items:center;flex-wrap:wrap;gap:7px 14px;line-height:1.5}
+.foot-operator{margin-top:9px;font-weight:700;color:var(--ink)}
+.foot-operator a{color:var(--indigo);text-underline-offset:3px}
+@media (max-width:640px){
+  .controls-in{padding-bottom:12px}
+  .list-wrap{padding-top:22px}
+  .scard-title-overlay{padding:38px 14px 12px}
+  .scard-info{min-height:50px;padding:12px 14px 13px}
+}
+
 </style>
 </head>
 <body>
@@ -406,7 +433,7 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
     <div class="foot-in">
       <div class="fbrand">沖縄県立高校入試 学校別データブック</div>
       掲載の合格基準（偏差値・内申）や追跡調査は、模試の追跡調査等にもとづく参考値であり、合格を保証するものではありません。出願にあたっては必ず沖縄県教育委員会・各高校の最新の公式資料をご確認ください。<br>
-      <a href="#/about">収録データについて・画像出典一覧</a>
+      <a href="#/about">収録データについて・画像出典一覧</a><div class="foot-operator">運営：<a href="https://www.juken-camp.online/" target="_blank" rel="noopener">JUKEN CAMP（受験キャンプ）</a></div>
     </div>
   </footer>
 </div>
