@@ -8,6 +8,22 @@
 <meta property="og:title" content="沖縄県立高校入試 学校別データブック">
 <meta property="og:description" content="志望校のことを深く調べるための、学校別の入試データ年鑑。59校・164学科収録。">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="沖縄県立高校入試 学校別データブック">
+<meta property="og:url" content="https://okinawa-koukou.jp/">
+<meta property="og:image" content="https://okinawa-koukou.jp/ogp.png">
+<meta property="og:image:alt" content="沖縄県立高校入試 学校別データブック">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="沖縄県立高校入試 学校別データブック">
+<meta name="twitter:description" content="志望校のことを深く調べるための、学校別の入試データ年鑑。59校・164学科収録。">
+<meta name="twitter:image" content="https://okinawa-koukou.jp/ogp.png">
+<link rel="canonical" href="https://okinawa-koukou.jp/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#16294F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -2207,5 +2223,15 @@ function renderAbout(view){
 /* ---------- boot ---------- */
 route();
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").catch((error) => {
+      console.error("Service Worker registration failed:", error);
+    });
+  });
+}
+</script>
+
 </body>
 </html>
