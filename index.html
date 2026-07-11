@@ -358,6 +358,7 @@ table.dt.application-table th:last-child,table.dt.application-table td:last-chil
 table.dt.tracking-table{table-layout:fixed}
 table.dt.tracking-table th.num{text-align:right}
 table.dt.tracking-table td.num{white-space:nowrap}
+table.dt.tracking-table td:nth-child(2),table.dt.tracking-table td:nth-child(2) .pill{white-space:nowrap}
 .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:1px 10px;letter-spacing:.05em}
 .pill.pass{background:#E2EDE6;color:#1F5A3C}
 .pill.fail{background:#F3E3E1;color:#8C3127}
@@ -470,6 +471,42 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   .list-wrap{padding-top:22px}
   .scard-title-overlay{padding:38px 14px 12px}
   .scard-info{min-height:50px;padding:12px 14px 13px}
+}
+
+/* ---------- school route search ---------- */
+.route-search{
+  margin-top:14px;padding:14px 16px 15px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--rad);
+  box-shadow:0 1px 2px rgba(29,36,45,.05);
+}
+.route-search-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.route-search-head h2{font-family:var(--serif);font-size:16.5px;letter-spacing:.06em;color:var(--ink)}
+.route-destination{font-size:11px;color:var(--ink-3)}
+.route-form{display:grid;grid-template-columns:minmax(180px,1fr) auto;gap:9px;align-items:start}
+.route-field{min-width:0}
+.route-origin{
+  display:block;width:100%;min-width:0;height:42px;border:1.5px solid var(--line-2);
+  border-radius:8px;background:#FDFCF8;color:var(--ink);font:inherit;font-size:14px;
+  padding:8px 11px;outline:none;transition:border-color .18s,box-shadow .18s;
+}
+.route-origin:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(36,66,124,.1)}
+.route-privacy{display:block;margin-top:4px;font-size:10.5px;line-height:1.5;color:var(--ink-3)}
+.route-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.route-button{
+  min-width:0;height:42px;border:1.5px solid var(--indigo);border-radius:8px;
+  background:var(--card);color:var(--indigo);font-size:12.5px;font-weight:700;
+  line-height:1.25;padding:6px 11px;white-space:nowrap;transition:background .18s,color .18s;
+}
+.route-button:hover,.route-button:focus-visible{background:var(--indigo);color:#fff}
+.route-button:disabled{cursor:wait;opacity:.6}
+.route-message{min-height:1.5em;margin-top:5px;font-size:11.5px;line-height:1.5;color:var(--shu)}
+@media (max-width:720px){
+  .route-form{grid-template-columns:1fr}
+  .route-actions{grid-template-columns:minmax(0,1.45fr) repeat(2,minmax(0,1fr))}
+  .route-button{padding-left:6px;padding-right:6px;white-space:normal}
+}
+@media (max-width:360px){
+  .route-actions{grid-template-columns:1fr}
 }
 
 </style>
@@ -1837,6 +1874,93 @@ function schoolGuideHtml(sc){
   </section>`;
 }
 
+function schoolRouteDestination(sc){
+  const sources=[sc,...(sc.depts||[])];
+  for(const s of sources){
+    const lat=Number(s.latitude??s.lat), lng=Number(s.longitude??s.lng);
+    if(Number.isFinite(lat)&&Number.isFinite(lng)) return `${lat},${lng}`;
+  }
+  for(const s of sources){
+    if(s.address) return String(s.address);
+  }
+  for(const s of sources){
+    const mapUrl=s.googleMapsUrl||s.googleMapUrl||s.mapUrl;
+    if(!mapUrl) continue;
+    try{
+      const u=new URL(mapUrl,location.href);
+      const q=u.searchParams.get("query")||u.searchParams.get("q")||u.searchParams.get("destination");
+      if(q) return q;
+    }catch(_){ /* 現在の学校データには地図URLなし */ }
+  }
+  return `沖縄県立${sc.name}高等学校 沖縄県`;
+}
+
+function schoolRouteHtml(sc){
+  return `<section class="route-search" aria-labelledby="routeSearchTitle">
+    <div class="route-search-head">
+      <h2 id="routeSearchTitle">自宅から学校までの行き方</h2>
+      <span class="route-destination">目的地：${esc(sc.name)}高等学校</span>
+    </div>
+    <form class="route-form" id="routeForm" novalidate>
+      <div class="route-field">
+        <label class="route-destination" for="routeOrigin">自宅住所・出発地点</label>
+        <input class="route-origin" id="routeOrigin" name="origin" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="例：浦添市港川1丁目" aria-describedby="routePrivacy routeMessage">
+        <small class="route-privacy" id="routePrivacy">入力した住所はこのサイトには保存されません</small>
+        <p class="route-message" id="routeMessage" role="status" aria-live="polite"></p>
+      </div>
+      <div class="route-actions" aria-label="交通手段を選ぶ">
+        <button class="route-button" type="button" data-travelmode="transit">バス・ゆいレール</button>
+        <button class="route-button" type="button" data-travelmode="driving">車</button>
+        <button class="route-button" type="button" data-travelmode="walking">徒歩</button>
+      </div>
+    </form>
+  </section>`;
+}
+
+function setupSchoolRoute(view,sc){
+  const form=view.querySelector("#routeForm");
+  if(!form) return;
+  const input=form.querySelector("#routeOrigin");
+  const message=form.querySelector("#routeMessage");
+  const buttons=[...form.querySelectorAll("[data-travelmode]")];
+  let opening=false;
+  const openRoute=travelmode=>{
+    const origin=input.value.trim();
+    if(!origin){
+      message.textContent="出発地点を入力してください";
+      input.setAttribute("aria-invalid","true");
+      input.focus();
+      return;
+    }
+    if(opening) return;
+    opening=true;
+    input.removeAttribute("aria-invalid");
+    message.textContent="";
+    buttons.forEach(button=>{ button.disabled=true; });
+    const destination=schoolRouteDestination(sc);
+    const url=`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=${encodeURIComponent(travelmode)}`;
+    window.open(url,"_blank","noopener,noreferrer");
+    window.setTimeout(()=>{
+      opening=false;
+      buttons.forEach(button=>{ button.disabled=false; });
+    },700);
+  };
+  form.addEventListener("click",event=>{
+    const button=event.target.closest("[data-travelmode]");
+    if(button) openRoute(button.dataset.travelmode);
+  });
+  form.addEventListener("submit",event=>{
+    event.preventDefault();
+    openRoute("transit");
+  });
+  input.addEventListener("input",()=>{
+    if(input.value.trim()){
+      input.removeAttribute("aria-invalid");
+      message.textContent="";
+    }
+  });
+}
+
 function renderSchool(view, sc, deptIdx){
   document.title = `${sc.name}高校の入試データ｜沖縄県立高校入試 学校別データブック`;
   const c=sc.credit;
@@ -1864,6 +1988,7 @@ function renderSchool(view, sc, deptIdx){
     ${licenseWarn?`<div class="warn-credit">この学校の写真はオープンライセンスを確認できていない候補画像です。公開サイトへ掲載する前に、画像提供元または学校へ利用許諾をご確認ください。</div>`:""}
     ${memoTexts.map(t=>`<div class="memo">${esc(t)}</div>`).join("")}
     ${schoolGuideHtml(sc)}
+    ${schoolRouteHtml(sc)}
     <nav class="dtabs" id="dtabs" aria-label="学科をえらぶ">
       ${sc.depts.map((d,i)=>`<button class="dtab ${i===deptIdx?"on":""}" data-i="${i}">${esc(d.dept)}${d.track==="定時制"?`<span class="tt">定</span>`:""}</button>`).join("")}
     </nav>
@@ -1876,6 +2001,7 @@ function renderSchool(view, sc, deptIdx){
     drawDept(view, sc, +b.dataset.i);
     history.replaceState(null,"",`#/s/${encodeURIComponent(sc.name)}/${b.dataset.i}`);
   });
+  setupSchoolRoute(view,sc);
   drawDept(view, sc, Math.min(deptIdx, sc.depts.length-1));
 }
 
@@ -2014,7 +2140,7 @@ function drawDept(view, sc, i){
     <div class="sec-b">
       ${rec.length?`
       <div class="tscroll"><table class="dt tracking-table" aria-label="追跡調査の平均値">
-        <colgroup><col style="width:14%"><col style="width:14%"><col style="width:24%"><col style="width:24%"><col style="width:24%"></colgroup>
+        <colgroup><col style="width:13%"><col style="width:18%"><col style="width:23%"><col style="width:23%"><col style="width:23%"></colgroup>
         <thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead>
         <tbody>${recRows}</tbody>
       </table></div>
@@ -2043,7 +2169,7 @@ function drawDept(view, sc, i){
     <div class="sec-b">
       ${legacy.map(L=>`
         <div class="od-sub">${esc(L.department)}（基準偏差値 ${num(L.dev)}・基準内申 ${num(L.nai)}${L.note?`・${esc(L.note)}`:""}）</div>
-        ${(L.rec&&L.rec.length)?`<div class="tscroll"><table class="dt tracking-table" aria-label="追跡調査の平均値"><colgroup><col style="width:14%"><col style="width:14%"><col style="width:24%"><col style="width:24%"><col style="width:24%"></colgroup><thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead><tbody>
+        ${(L.rec&&L.rec.length)?`<div class="tscroll"><table class="dt tracking-table" aria-label="追跡調査の平均値"><colgroup><col style="width:13%"><col style="width:18%"><col style="width:23%"><col style="width:23%"><col style="width:23%"></colgroup><thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead><tbody>
           ${L.rec.map(r=>`<tr><td><span class="pill ${r.sel==="特色"?"sel-t":"sel-i"}">${esc(r.sel)}</span></td><td><span class="pill ${r.res==="合格"?"pass":"fail"}">${esc(r.res)}</span></td><td class="num">${num(r.dev)}</td><td class="num">${num(r.nai)}</td><td class="num">${num(r.score)}</td></tr>`).join("")}
         </tbody></table></div>`:""}
       `).join("")}
