@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3E5CH3PM50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3E5CH3PM50');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>沖縄県立高校入試 学校別データブック｜59校の定員・倍率・合格基準・追跡調査</title>
@@ -351,6 +360,10 @@ table.dt th{
 table.dt td{border-bottom:1px solid var(--line);padding:8px;vertical-align:middle}
 table.dt tr:last-child td{border-bottom:none}
 td.num,th.num{text-align:right;font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums}
+/* 追跡調査は5列の対応関係を固定し、画面幅によって数値の列が曖昧にならないようにする */
+table.dt.tracking-table{table-layout:fixed}
+table.dt.tracking-table th.num{text-align:right}
+table.dt.tracking-table td.num{white-space:nowrap}
 .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:1px 10px;letter-spacing:.05em}
 .pill.pass{background:#E2EDE6;color:#1F5A3C}
 .pill.fail{background:#F3E3E1;color:#8C3127}
@@ -427,6 +440,12 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   .kijun{grid-template-columns:1fr}
   .topbar-in{padding:9px 14px}
   .brand small{display:none}
+  /* 表を横にずらさず、追跡調査の数値を見出しの真下に表示する */
+  .tscroll:has(.tracking-table){overflow-x:hidden}
+  table.dt.tracking-table{min-width:0;font-size:12px}
+  table.dt.tracking-table th{font-size:10px;letter-spacing:.02em;padding:6px 3px}
+  table.dt.tracking-table td{padding:8px 3px}
+  table.dt.tracking-table .pill{font-size:10.5px;padding:2px 6px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
@@ -2009,7 +2028,8 @@ function drawDept(view, sc, i){
     ${secH("追跡調査","2025年度・受験者の平均値")}
     <div class="sec-b">
       ${rec.length?`
-      <div class="tscroll"><table class="dt">
+      <div class="tscroll"><table class="dt tracking-table" aria-label="追跡調査の平均値">
+        <colgroup><col style="width:14%"><col style="width:14%"><col style="width:24%"><col style="width:24%"><col style="width:24%"></colgroup>
         <thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead>
         <tbody>${recRows}</tbody>
       </table></div>
@@ -2038,7 +2058,7 @@ function drawDept(view, sc, i){
     <div class="sec-b">
       ${legacy.map(L=>`
         <div class="od-sub">${esc(L.department)}（基準偏差値 ${num(L.dev)}・基準内申 ${num(L.nai)}${L.note?`・${esc(L.note)}`:""}）</div>
-        ${(L.rec&&L.rec.length)?`<div class="tscroll"><table class="dt"><thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead><tbody>
+        ${(L.rec&&L.rec.length)?`<div class="tscroll"><table class="dt tracking-table" aria-label="追跡調査の平均値"><colgroup><col style="width:14%"><col style="width:14%"><col style="width:24%"><col style="width:24%"><col style="width:24%"></colgroup><thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead><tbody>
           ${L.rec.map(r=>`<tr><td><span class="pill ${r.sel==="特色"?"sel-t":"sel-i"}">${esc(r.sel)}</span></td><td><span class="pill ${r.res==="合格"?"pass":"fail"}">${esc(r.res)}</span></td><td class="num">${num(r.dev)}</td><td class="num">${num(r.nai)}</td><td class="num">${num(r.score)}</td></tr>`).join("")}
         </tbody></table></div>`:""}
       `).join("")}
