@@ -59,7 +59,7 @@
   --mono:"IBM Plex Mono",ui-monospace,monospace;
   --rad:10px;
   --maxw:1060px;
-  --topbar-h:58px;
+  --topbar-h:50px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
@@ -88,13 +88,9 @@ button{font-family:inherit;cursor:pointer}
   background:rgba(243,241,233,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
-.topbar-in{max-width:var(--maxw);height:100%;box-sizing:border-box;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:12px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-width:0}
-.brand-title{display:block;line-height:1.08}
-.brand b{display:block;font-family:var(--serif);font-weight:800;font-size:16px;letter-spacing:.06em;white-space:nowrap}
-.brand small{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand .brand-kicker{display:block;font-size:8px;letter-spacing:.15em;line-height:1.2;overflow:visible;text-overflow:clip}
-.brand .brand-by{color:var(--indigo);font-weight:700;letter-spacing:.1em;overflow:visible;text-overflow:clip;flex:none}
+.topbar-in{max-width:var(--maxw);height:100%;box-sizing:border-box;margin:0 auto;padding:8px 16px;display:flex;align-items:center}
+.brand{text-decoration:none;color:var(--ink);min-width:0}
+.brand b{display:block;font-family:var(--serif);font-weight:800;font-size:clamp(14px,3.8vw,16px);letter-spacing:.04em;white-space:nowrap}
 
 /* ---------- cover / masthead ---------- */
 .cover{max-width:var(--maxw);margin:0 auto;padding:44px 16px 8px;position:relative}
@@ -432,9 +428,6 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   .shero-stats{display:none}
   .kijun{grid-template-columns:1fr}
   .topbar-in{padding:9px 14px}
-  .brand b{font-size:15px}
-  .brand .brand-kicker{font-size:7.7px}
-  .brand .brand-by{display:inline-block;font-size:8.5px;letter-spacing:.06em}
   /* 表を横にずらさず、追跡調査の数値を見出しの真下に表示する */
   .tscroll:has(.tracking-table){overflow-x:hidden}
   table.dt.tracking-table{min-width:0;font-size:12px}
@@ -479,8 +472,7 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   <header class="topbar">
     <div class="topbar-in">
       <a class="brand" href="#/">
-        <span class="brand-title"><small class="brand-kicker">沖縄県立高校入試</small><b>学校別データブック</b></span>
-        <small class="brand-by">by JUKEN CAMP</small>
+        <b>沖縄県立高校入試 学校別データブック</b>
       </a>
     </div>
   </header>
@@ -630,7 +622,7 @@ function renderHome(view){
     <div class="cover-edition">
       <div class="edition-meta">令和8年度入試データ収録</div>
     </div>
-    <h1>志望校を、<br>もっと深く。</h1>
+    <h1>沖縄県立高校入試の、<br>学校別まとめサイト。</h1>
     <div class="cover-rule"></div>
     <p class="cover-lead">沖縄で高校受験に向き合ってきたJUKEN CAMPが、だれでも自由に見られるようまとめた、志望校選びのための学校別データです。</p>
     <div class="cover-stats">
