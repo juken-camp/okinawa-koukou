@@ -12,8 +12,8 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>沖縄県立高校入試 学校別データブック｜59校の定員・倍率・合格基準・追跡調査</title>
-<meta name="description" content="沖縄県立高校59校・164学科の入試データを学校別に収録。学科・募集定員・特色選抜と一般選抜・内申と学力検査の比重・倍率・追跡調査（合格者/不合格者の偏差値・内申・当日点）を1校ずつ確認できる、JUKEN CAMP（受験キャンプ）運営の学校別データブック。">
+<title>沖縄県立高校入試 学校別データブック｜59校の定員・倍率・合格基準・沖縄県統一プレ入試追跡調査</title>
+<meta name="description" content="沖縄県立高校59校・164学科の入試データを学校別に収録。学科・募集定員・特色選抜と一般選抜・内申と学力検査の比重・倍率・沖縄県統一プレ入試の追跡調査（合格者/不合格者の偏差値・内申・当日点）を1校ずつ確認できる、JUKEN CAMP（受験キャンプ）運営の学校別データブック。">
 <meta property="og:title" content="沖縄県立高校入試 学校別データブック">
 <meta property="og:description" content="志望校のことを深く調べるための、学校別の入試データ年鑑。59校・164学科収録。">
 <meta property="og:type" content="website">
@@ -91,10 +91,6 @@ button{font-family:inherit;cursor:pointer}
 .brand b{font-family:var(--serif);font-weight:800;font-size:16px;letter-spacing:.06em;white-space:nowrap}
 .brand small{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand .brand-by{color:var(--indigo);font-weight:700;letter-spacing:.1em;overflow:visible;text-overflow:clip;flex:none}
-.top-links{margin-left:auto;display:flex;gap:14px}
-.top-links a{font-size:12px;font-weight:700;color:var(--ink-2);text-decoration:none;letter-spacing:.05em}
-.top-links a:hover{color:var(--indigo)}
-.nav-short{display:none}
 
 /* ---------- cover / masthead ---------- */
 .cover{max-width:var(--maxw);margin:0 auto;padding:44px 16px 8px;position:relative}
@@ -140,9 +136,6 @@ button{font-family:inherit;cursor:pointer}
 }
 .cover-rule::after{content:"";position:absolute;right:0;top:6px;width:38%;height:1px;background:var(--line-2)}
 .cover-lead{max-width:640px;color:var(--ink-2);font-size:14.5px;animation:fadeUp .7s .34s both}
-.cover-operator{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--ink-3);letter-spacing:.03em;animation:fadeUp .7s .39s both}
-.cover-operator a{color:var(--indigo);font-weight:800;text-decoration:none;border-bottom:1px solid rgba(36,66,124,.35);padding-bottom:1px}
-.cover-operator a:hover{color:var(--shu);border-color:var(--shu)}
 .cover-stats{display:flex;gap:26px;margin:22px 0 6px;flex-wrap:wrap;animation:fadeUp .7s .44s both}
 .cstat b{font-family:var(--mono);font-weight:600;font-size:26px;color:var(--indigo);letter-spacing:.02em}
 .cstat span{display:block;font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:.12em}
@@ -446,9 +439,6 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   .topbar-in{padding:9px 14px}
   .brand .brand-data{display:none}
   .brand .brand-by{display:inline-block;font-size:8.5px;letter-spacing:.06em}
-  .top-links{gap:8px}
-  .top-links .nav-full{display:none}
-  .top-links .nav-short{display:inline}
   /* 表を横にずらさず、追跡調査の数値を見出しの真下に表示する */
   .tscroll:has(.tracking-table){overflow-x:hidden}
   table.dt.tracking-table{min-width:0;font-size:12px}
@@ -498,16 +488,13 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
         <small class="brand-data">OKINAWA PREF. HIGH SCHOOL ADMISSIONS DATA</small>
         <small class="brand-by">by JUKEN CAMP</small>
       </a>
-      <nav class="top-links">
-        <a href="#/about"><span class="nav-full">収録データと出典</span><span class="nav-short">出典</span></a>
-      </nav>
     </div>
   </header>
   <main id="view" aria-live="polite"></main>
   <footer>
     <div class="foot-in">
       <div class="fbrand">沖縄県立高校入試 学校別データブック</div>
-      掲載の合格基準（偏差値・内申）や追跡調査は、模試の追跡調査等にもとづく参考値であり、合格を保証するものではありません。出願にあたっては必ず沖縄県教育委員会・各高校の最新の公式資料をご確認ください。<br>
+      掲載の合格基準（偏差値・内申）や追跡調査は、沖縄県統一プレ入試の追跡調査にもとづく参考値であり、合格を保証するものではありません。出願にあたっては必ず沖縄県教育委員会・各高校の最新の公式資料をご確認ください。<br>
       <a href="#/about">収録データについて・画像出典一覧</a><div class="foot-operator">運営：<a href="https://www.juken-camp.online/" target="_blank" rel="noopener">JUKEN CAMP（受験キャンプ）</a></div>
     </div>
   </footer>
@@ -643,7 +630,7 @@ window.addEventListener("hashchange", route);
 
 /* ---------- HOME ---------- */
 function renderHome(view){
-  document.title = "沖縄県立高校入試 学校別データブック｜59校の定員・倍率・合格基準・追跡調査";
+  document.title = "沖縄県立高校入試 学校別データブック｜59校の定員・倍率・合格基準・沖縄県統一プレ入試追跡調査";
   view.innerHTML = `
   <section class="cover">
     <div class="cover-edition">
@@ -651,8 +638,7 @@ function renderHome(view){
     </div>
     <h1><span class="h1-sub">沖縄県立高校入試</span>学校別データブック</h1>
     <div class="cover-rule"></div>
-    <p class="cover-lead">志望校のことを、1校ずつ深く。学科・募集定員・特色選抜と一般選抜・内申と学力検査の比重・倍率・追跡調査を、県立高校ごとにまとめた入試データ年鑑です。</p>
-    <p class="cover-operator">制作・運営：<a href="https://www.juken-camp.online/" target="_blank" rel="noopener">JUKEN CAMP（受験キャンプ）</a><span>｜沖縄県立高校入試の進路・受験対策</span></p>
+    <p class="cover-lead">沖縄で高校受験に向き合ってきたJUKEN CAMPが、だれでも自由に見られるようまとめた、志望校選びのための学校別データです。</p>
     <div class="cover-stats">
       <div class="cstat"><b>${SCHOOL_LIST.length}</b><span>収録校</span></div>
       <div class="cstat"><b>${SCHOOLS.length}</b><span>学科・コース</span></div>
@@ -1917,7 +1903,7 @@ function drawDept(view, sc, i){
   /* 基準値 */
   const kijunHtml = `
   <section class="sec" data-reveal>
-    ${secH("合格基準のめやす","2025年度・模試追跡調査ベース")}
+    ${secH("合格基準のめやす","2025年度・沖縄県統一プレ入試の追跡調査ベース")}
     <div class="sec-b">
       ${y.dev==null?`<p class="nodata">この学科の合格基準データは未収録です（新設・改編学科など）。</p>`:`
       <div class="kijun">
@@ -2044,7 +2030,7 @@ function drawDept(view, sc, i){
         <thead><tr><th>選抜</th><th>結果</th><th class="num">偏差値 平均</th><th class="num">内申 平均</th><th class="num">当日点 平均</th></tr></thead>
         <tbody>${recRows}</tbody>
       </table></div>
-      <p class="note">模試を受けた受験者の追跡調査にもとづく平均値です。「—」はデータ数が少なく非公表・未集計の項目。</p>
+      <p class="note">沖縄県統一プレ入試を受けた受験者の追跡調査にもとづく平均値です。「—」はデータ数が少なく非公表・未集計の項目。</p>
       `:`<p class="nodata">この学科の追跡調査データは未収録です。</p>`}
       ${td?`<details class="dx"><summary>くわしい分布を見る（最小・平均・最大）</summary><div class="dx-in">
         ${detailBlock("special","特色選抜")}
@@ -2235,7 +2221,7 @@ function renderAbout(view){
     <ul>
       <li><b>募集定員・特色選抜の割合・特別枠・一般選抜の比重</b> — ${esc(TOKU_SRC)}にもとづきます。</li>
       <li><b>倍率・志願状況</b> — 2025年度の志願状況（特色選抜・一般選抜・2次募集）です。</li>
-      <li><b>合格基準（偏差値・内申）・追跡調査</b> — 模試の追跡調査等にもとづく参考値です。県教育委員会が公表する公式数値ではなく、合格を保証するものではありません。</li>
+      <li><b>合格基準（偏差値・内申）・追跡調査</b> — 沖縄県統一プレ入試の追跡調査にもとづく参考値です。県教育委員会が公表する公式数値ではなく、合格を保証するものではありません。</li>
     </ul>
     <h2>ご利用にあたって</h2>
     <ul>
