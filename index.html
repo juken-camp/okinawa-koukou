@@ -520,7 +520,7 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
       </a>
     </div>
   </header>
-  <main id="view" aria-live="polite"></main>
+  <main id="view"></main>
   <footer>
     <div class="foot-in">
       <div class="fbrand">沖縄県立高校入試 学校別データブック</div>
@@ -645,7 +645,9 @@ function countUp(el){
 
 /* ---------- router ---------- */
 function route(){
-  const h = decodeURIComponent(location.hash||"#/");
+  let h;
+  try{ h = decodeURIComponent(location.hash||"#/"); }
+  catch(_){ h = "#/"; } /* 不正な%エンコードのURLでも一覧を表示する */
   const view = document.getElementById("view");
   window.scrollTo(0,0);
   let m;
@@ -1962,6 +1964,7 @@ function setupSchoolRoute(view,sc){
 }
 
 function renderSchool(view, sc, deptIdx){
+  deptIdx = Math.min(Math.max(0, deptIdx), sc.depts.length-1); /* 範囲外の学科番号URLでもタブ表示とパネルを一致させる */
   document.title = `${sc.name}高校の入試データ｜沖縄県立高校入試 学校別データブック`;
   const c=sc.credit;
   const licenseWarn = !!c && (/未確認|許諾/.test((c.rights||"")+(c.note||"")) || ["久米島","宮古総合実業"].includes(sc.name));
