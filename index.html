@@ -59,6 +59,7 @@
   --mono:"IBM Plex Mono",ui-monospace,monospace;
   --rad:10px;
   --maxw:1060px;
+  --topbar-h:58px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
@@ -83,13 +84,16 @@ button{font-family:inherit;cursor:pointer}
 /* ---------- top bar ---------- */
 .topbar{
   position:sticky;top:0;z-index:50;
+  height:var(--topbar-h);
   background:rgba(243,241,233,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
-.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
-.brand{display:flex;align-items:baseline;gap:9px;text-decoration:none;color:var(--ink);min-width:0}
-.brand b{font-family:var(--serif);font-weight:800;font-size:16px;letter-spacing:.06em;white-space:nowrap}
+.topbar-in{max-width:var(--maxw);height:100%;box-sizing:border-box;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-width:0}
+.brand-title{display:block;line-height:1.08}
+.brand b{display:block;font-family:var(--serif);font-weight:800;font-size:16px;letter-spacing:.06em;white-space:nowrap}
 .brand small{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .brand-kicker{display:block;font-size:8px;letter-spacing:.15em;line-height:1.2;overflow:visible;text-overflow:clip}
 .brand .brand-by{color:var(--indigo);font-weight:700;letter-spacing:.1em;overflow:visible;text-overflow:clip;flex:none}
 
 /* ---------- cover / masthead ---------- */
@@ -97,15 +101,6 @@ button{font-family:inherit;cursor:pointer}
 .cover-edition{
   margin-bottom:18px;
 }
-/* 学校名から直接選べるクイック索引 */
-.quick-index{margin-top:13px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.48);overflow:hidden}
-.quick-index summary{cursor:pointer;padding:10px 13px;font-family:var(--sans);font-size:13px;font-weight:800;color:var(--indigo);letter-spacing:.04em;list-style:none}
-.quick-index summary::-webkit-details-marker{display:none}
-.quick-index summary::after{content:"＋";float:right;color:var(--ink-3)}
-.quick-index[open] summary::after{content:"−"}
-.school-quick{display:flex;flex-wrap:nowrap;gap:7px;padding:0 12px 13px;overflow-x:auto;scrollbar-width:thin}.school-quick a{flex:none}
-.school-quick a{display:inline-flex;align-items:center;min-height:34px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);font-size:12px;font-weight:750;text-decoration:none;transition:.18s}
-.school-quick a:hover,.school-quick a:focus-visible{border-color:var(--indigo);background:var(--indigo);color:#fff;transform:translateY(-1px)}
 .scard-title-overlay{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px 14px 11px;background:linear-gradient(transparent,rgba(10,20,38,.86));color:#fff}
 .scard-title-overlay b{font-family:var(--serif);font-size:22px;letter-spacing:.06em;text-shadow:0 1px 5px rgba(0,0,0,.35)}
 .scard-title-overlay small{margin-left:5px;font-size:11px}
@@ -142,7 +137,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* ---------- controls: search + index tabs ---------- */
 .controls{
-  position:sticky;top:47px;z-index:40;background:var(--paper);
+  position:sticky;top:var(--topbar-h);z-index:40;background:var(--paper);
   border-bottom:1px solid var(--line-2);
   box-shadow:0 6px 14px -12px rgba(29,36,45,.35);
 }
@@ -275,7 +270,7 @@ button{font-family:inherit;cursor:pointer}
 }
 
 /* dept tabs */
-.dtabs{display:flex;gap:8px;overflow-x:auto;padding:18px 2px 4px;scrollbar-width:none;position:sticky;top:47px;z-index:30;background:linear-gradient(180deg,var(--paper) 82%,transparent)}
+.dtabs{display:flex;gap:8px;overflow-x:auto;padding:18px 2px 4px;scrollbar-width:none;position:sticky;top:var(--topbar-h);z-index:30;background:linear-gradient(180deg,var(--paper) 82%,transparent)}
 .dtabs::-webkit-scrollbar{display:none}
 .dtab{
   flex:none;border:1.5px solid var(--line-2);background:var(--card);color:var(--ink-2);
@@ -437,7 +432,8 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   .shero-stats{display:none}
   .kijun{grid-template-columns:1fr}
   .topbar-in{padding:9px 14px}
-  .brand .brand-data{display:none}
+  .brand b{font-size:15px}
+  .brand .brand-kicker{font-size:7.7px}
   .brand .brand-by{display:inline-block;font-size:8.5px;letter-spacing:.06em}
   /* 表を横にずらさず、追跡調査の数値を見出しの真下に表示する */
   .tscroll:has(.tracking-table){overflow-x:hidden}
@@ -453,7 +449,6 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
 
 /* 最終レイアウト調整 */
 .controls-in{padding-bottom:16px}
-.quick-index{margin-bottom:0}
 .list-wrap{padding-top:28px}
 .scard-body{display:flex;flex-direction:column}
 .scard-img{flex:none}
@@ -484,8 +479,7 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   <header class="topbar">
     <div class="topbar-in">
       <a class="brand" href="#/">
-        <b>学校別データブック</b>
-        <small class="brand-data">OKINAWA PREF. HIGH SCHOOL ADMISSIONS DATA</small>
+        <span class="brand-title"><small class="brand-kicker">沖縄県立高校入試</small><b>学校別データブック</b></span>
         <small class="brand-by">by JUKEN CAMP</small>
       </a>
     </div>
@@ -634,9 +628,9 @@ function renderHome(view){
   view.innerHTML = `
   <section class="cover">
     <div class="cover-edition">
-      <div class="edition-meta">SCHOOL DATA BOOK<br>令和8年度入試データ収録</div>
+      <div class="edition-meta">令和8年度入試データ収録</div>
     </div>
-    <h1><span class="h1-sub">沖縄県立高校入試</span>学校別データブック</h1>
+    <h1>志望校を、<br>もっと深く。</h1>
     <div class="cover-rule"></div>
     <p class="cover-lead">沖縄で高校受験に向き合ってきたJUKEN CAMPが、だれでも自由に見られるようまとめた、志望校選びのための学校別データです。</p>
     <div class="cover-stats">
@@ -649,13 +643,9 @@ function renderHome(view){
     <div class="controls-in">
       <div class="searchbox">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
-        <input id="q" type="search" placeholder="学校名・学科名でさがす（例：名護 / 理数）" value="${esc(state.q)}" autocomplete="off">
+        <input id="q" type="search" placeholder="学校名・学科名で検索（例：名護 / 理数）" value="${esc(state.q)}" autocomplete="off">
       </div>
       <div class="tabs" id="tabs"></div>
-      <details class="quick-index" open>
-        <summary>学校名から選ぶ</summary>
-        <div class="school-quick" id="schoolQuick"></div>
-      </details>
     </div>
   </div>
   <section class="list-wrap">
@@ -681,14 +671,13 @@ function renderHome(view){
 }
 
 function drawGrid(view){
-  const grid=view.querySelector("#grid"), line=view.querySelector("#resultLine"), quick=view.querySelector("#schoolQuick");
+  const grid=view.querySelector("#grid"), line=view.querySelector("#resultLine");
   const q=norm(state.q.trim());
   let list=SCHOOL_LIST.filter(s=> state.area==="すべて"||s.area===state.area);
   if(q){
     list=list.filter(s=> norm(s.name).includes(q) || s.depts.some(d=>norm(d.dept).includes(q)) );
   }
   line.textContent = `INDEX — ${list.length} SCHOOLS${state.area!=="すべて"?" / "+state.area:""}`;
-  if(quick) quick.innerHTML = list.map(s=>`<a href="#/s/${encodeURIComponent(s.name)}">${esc(s.name)}高校</a>`).join("") || `<span class="nodata">該当する学校がありません</span>`;
   grid.innerHTML = list.map(s=>{
     const band = s.devMin==null?"—":(s.devMin===s.devMax?s.devMin:`${s.devMin}–${s.devMax}`);
     return `<a class="scard" href="#/s/${encodeURIComponent(s.name)}" style="--ac:${AREA_VAR[s.area]}">
