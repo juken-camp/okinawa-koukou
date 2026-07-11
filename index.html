@@ -266,7 +266,7 @@ button{font-family:inherit;cursor:pointer}
 }
 
 /* dept tabs */
-.dtabs{display:flex;gap:8px;overflow-x:auto;padding:18px 2px 4px;scrollbar-width:none;position:sticky;top:var(--topbar-h);z-index:30;background:linear-gradient(180deg,var(--paper) 82%,transparent)}
+.dtabs{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 10px;scrollbar-width:none;position:sticky;top:var(--topbar-h);z-index:30;background:var(--paper)}
 .dtabs::-webkit-scrollbar{display:none}
 .dtab{
   flex:none;border:1.5px solid var(--line-2);background:var(--card);color:var(--ink-2);
@@ -349,6 +349,10 @@ table.dt th{
 table.dt td{border-bottom:1px solid var(--line);padding:8px;vertical-align:middle}
 table.dt tr:last-child td{border-bottom:none}
 td.num,th.num{text-align:right;font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums}
+/* 志願状況は5列を画面内に固定し、行名と数値の対応を崩さない */
+table.dt.application-table{table-layout:fixed;min-width:0}
+table.dt.application-table th,table.dt.application-table td{white-space:nowrap}
+table.dt.application-table th:last-child,table.dt.application-table td:last-child{text-align:right}
 /* 追跡調査は5列の対応関係を固定し、画面幅によって数値の列が曖昧にならないようにする */
 table.dt.tracking-table{table-layout:fixed}
 table.dt.tracking-table th.num{text-align:right}
@@ -362,9 +366,6 @@ table.dt.tracking-table td.num{white-space:nowrap}
 .rbar-track{position:absolute;top:9px;left:0;right:0;height:2px;background:var(--line-2);border-radius:2px}
 .rbar-range{position:absolute;top:7px;height:6px;border-radius:4px;background:var(--indigo-pale);border:1px solid #B9C6E2;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1), left .8s}
 .rbar-avg{position:absolute;top:4px;width:3px;height:12px;border-radius:2px;background:var(--shu)}
-.ratio-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
-.ratio-bar{height:8px;border-radius:99px;background:var(--indigo);opacity:.85;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
-.ratio-bar.low{background:var(--ink-3)}
 .over1{color:var(--shu);font-weight:700}
 .note{font-size:11.5px;color:var(--ink-3);margin-top:10px;line-height:1.7}
 .scope-note{
@@ -434,6 +435,11 @@ footer{border-top:1px solid var(--line-2);background:var(--paper-2)}
   table.dt.tracking-table th{font-size:10px;letter-spacing:.02em;padding:6px 3px}
   table.dt.tracking-table td{padding:8px 3px}
   table.dt.tracking-table .pill{font-size:10.5px;padding:2px 6px}
+  .tscroll:has(.application-table){overflow-x:hidden}
+  table.dt.application-table{font-size:12px}
+  table.dt.application-table th{font-size:10px;letter-spacing:.01em;padding:6px 3px}
+  table.dt.application-table td{padding:9px 3px}
+  table.dt.application-table .pill{font-size:10px;padding:2px 6px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
@@ -1932,13 +1938,12 @@ function drawDept(view, sc, i){
   const ratioRow=(label,r,selClass)=>{
     if(!r) return "";
     const ratio=r.ratio;
-    const w = ratio==null?0:Math.min(100, ratio/3*100);
     return `<tr>
       <td><span class="pill ${selClass}">${label}</span></td>
       <td class="num">${num(r.capacity)}</td>
       <td class="num">${num(r.applicants)}</td>
       <td class="num">${r.difference==null?"—":(r.difference>0?"+":"")+r.difference}</td>
-      <td><div class="ratio-cell"><div class="ratio-bar ${ratio!=null&&ratio<1?"low":""}" data-w="${w}%"></div><span class="num ${ratio!=null&&ratio>=1?"over1":""}" style="min-width:44px;text-align:right">${ratio==null?"—":ratio.toFixed(2)}</span></div></td>
+      <td class="num ${ratio!=null&&ratio>=1?"over1":""}">${ratio==null?"—":ratio.toFixed(2)}</td>
     </tr>`;
   };
   const bairituHtml = `
@@ -1946,7 +1951,8 @@ function drawDept(view, sc, i){
     ${secH("倍率・志願状況","2025年度")}
     <div class="sec-b">
       ${ap?`
-      <div class="tscroll"><table class="dt">
+      <div class="tscroll"><table class="dt application-table" aria-label="2025年度の選抜別志願状況と倍率">
+        <colgroup><col style="width:28%"><col style="width:18%"><col style="width:18%"><col style="width:14%"><col style="width:22%"></colgroup>
         <thead><tr><th>選抜</th><th class="num">募集人員</th><th class="num">志願者</th><th class="num">差</th><th style="text-align:right">倍率</th></tr></thead>
         <tbody>
           ${ratioRow("特色選抜",ap.special,"sel-t")}
